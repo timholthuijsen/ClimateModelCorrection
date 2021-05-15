@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+import joblib
 
 text = input("""Please provide the path to your .nc climate model output file or use the default setup by typing default: """)
 
@@ -75,5 +76,8 @@ if modeltype.lower() == 'linear':
     linear = True
 
 if linear:
+    model = LinearRegression()
     ModelMaker(LinearRegression())
     
+ModelMaker(model)   
+joblib.dump(model, 'TrainedModel.joblib')
