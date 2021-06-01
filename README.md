@@ -4,7 +4,7 @@ This Repository represents the final products of my Climate Model Correction Bac
 
 In the data found in this repository, a general method for climate model correction is developed in the capstone.ipynb file.
 
-The accompanying bachelor thesis paper can also be found in this repo, under the name capstone.docx
+The accompanying bachelor thesis paper can also be found in this repo, under the name capstone.pdf
 
 From the climate model adjustment method developed in this repository, a generalized correction algorithm is developed in the ModelMaker.py file. 
 For this file, any and all climate model temperature outputs can be given as a NetCDF (.nc) file, and the .py file will return a tailor-made model that reduces your climate model inaccuracy by a significant amount.
