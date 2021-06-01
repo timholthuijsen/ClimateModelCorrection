@@ -4,6 +4,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.neural_network import MLPRegressor
 from sklearn.ensemble import RandomForestRegressor
 import joblib
+from DataProcessing import CSVWriter
 
 text = input("""Please provide the path to your .nc climate model output file or use the default setup by typing default: """)
 
@@ -27,18 +28,28 @@ elif text == 'default':
 else:
     normal = True
     
+    
 
 #Determine data origin based on usage mode
 if default:
     data = pd.read_csv("MegaTable.csv/")
     
+#If someone gives their own custom .nc filetype, we convert it to the required format:
 if normal:
-    print("""Your data needs to be inserted into the MegaTable.csv training set.
+    #We use our new DataProcessing function to transform the .nc data
+    try:
+        CSVWriter(Data = text)
+        #if it worked, we use this data
+        data = pd.read_csv("CustomTable.csv/")
+    #if it doesn't work
+    except:
+        print("""Your data needs to be inserted into the MegaTable.csv training set.
           An automatic implementation for this is on its way and will be available
           in this function soon. If you already want to use this function,
           simply put your climate temperature data into the MegaTable.csv and
           use the 'default' implementation.""")
-    data = pd.read_csv("MegaTable.csv/")
+        data = pd.read_csv("MegaTable.csv/")
+
 
 
 
