@@ -1,6 +1,8 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.neural_network import MLPRegressor
+from sklearn.ensemble import RandomForestRegressor
 import joblib
 
 text = input("""Please provide the path to your .nc climate model output file or use the default setup by typing default: """)
@@ -11,6 +13,10 @@ Note: This program is still currently under development
 
 
 print("your nc file is:", text)
+
+debug = False
+default = False
+normal = False
 
 if text == 'SudoDebug':
     print("Welcome to debug mode")
@@ -23,9 +29,18 @@ else:
     
 
 #Determine data origin based on usage mode
-if default == True:
+if default:
     data = pd.read_csv("MegaTable.csv/")
     
+if normal:
+    print("""Your data needs to be inserted into the MegaTable.csv training set.
+          An automatic implementation for this is on its way and will be available
+          in this function soon. If you already want to use this function,
+          simply put your climate temperature data into the MegaTable.csv and
+          use the 'default' implementation.""")
+    data = pd.read_csv("MegaTable.csv/")
+
+
 
 columns_to_use = [
     "ReforecastLon",
@@ -72,12 +87,32 @@ def ModelMaker(model, x_train = x_train, y_train = y_train,
 modeltype = input("""What kind of model do you want to use?
                   options: Linear, RandomForest, NeuralNetwork """)
                   
+linear = False
+neural = False
+forest = False
+                  
 if modeltype.lower() == 'linear':
     linear = True
+    
+if modeltype.lower() == 'randomforest':
+    neural = True
+    
+if modeltype.lower() == 'neuralnetwork':
+    forest = True
 
 if linear:
-    model = LinearRegression()
-    ModelMaker(LinearRegression())
+    print('training your model. This may take a while.')
+    model = LinearRegression().fit(x_train,y_train)
+    ModelMaker(model, fit=False)
     
-ModelMaker(model)   
+if neural:
+    print('training your model. This may take a while.')
+    model= MLPRegressor(max_iter = 500).fit(x_train,y_train)
+    ModelMaker(model, fit=False)
+    
+if forest:
+    print('training your model. This may take a while.')
+    model=RandomForestRegressor().fit(x_train,y_train)
+    ModelMaker(model, fit=False)
+      
 joblib.dump(model, 'TrainedModel.joblib')
